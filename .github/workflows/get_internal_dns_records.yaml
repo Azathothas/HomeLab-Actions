@@ -1,4 +1,4 @@
-name: ⏫ Update Internal DNS 🌐 Records 🔰
+name: ⏫ Update 🔏 Internal DNS 🌐 Records 🔰
 #MAX_RUNTIME: 01-05 Mins
 on:
   workflow_dispatch: # Whenever manually run from actions-tab
@@ -32,7 +32,24 @@ jobs:
           # Again just because
           sudo apt install coreutils curl dos2unix jq moreutils wget -y
         continue-on-error: true
-        
+
+      - name: Install eget
+        run: |
+          # Presets
+          set -x ; set +e
+          #--------------#
+          # eget for bins
+          sudo wget "https://raw.githubusercontent.com/Azathothas/Toolpacks/main/x86_64/eget" -O "/usr/local/bin/eget"
+          sudo chmod +xwr "/usr/local/bin/eget"
+        continue-on-error: false
+
+      - name: Install Deps
+        run: |
+          # Presets
+          set -x ; set +e
+          #godns
+          sudo eget "TimothyYe/godns" --asset "godns_3.0.4_linux_amd64.tar.gz" --to "/usr/local/bin/godns"
+
       - name: Update "jellyfin-music.prashansa.com.np:8096" (segfault-ucf-NormalAfford)
         run: |
           # Presets
@@ -64,5 +81,5 @@ jobs:
           repository: ./main        
           commit_user_name: Azathothas # defaults to "github-actions[bot]"
           commit_user_email: AjamX101@gmail.com # defaults to "41898282+github-actions[bot]@users.noreply.github.com"
-          commit_message: "✅ ⏫ Updated Internal DNS 🌐 Records 🔰 <-- ${{ env.NEPALI_TIME }} ⌚"
+          commit_message: "✅ ⏫ Updated 🔏 Internal DNS 🌐 Records 🔰 <-- ${{ env.NEPALI_TIME }} ⌚"
           push_options: '--force'
