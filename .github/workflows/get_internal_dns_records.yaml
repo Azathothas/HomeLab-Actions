@@ -7,6 +7,7 @@ on:
 #------------------------------------------------------------------------------------#  
 env:
   #GITHUB_WORKSPACE: "${{ env.GITHUB_WORKSPACE }}"
+  DOMAIN_NAME:  "prashansa.com.np"
   TS_API_KEY: "${{ secrets.TS_API_KEY }}"
 #------------------------------------------------------------------------------------#
 jobs:
@@ -50,7 +51,9 @@ jobs:
           #godns
           sudo eget "TimothyYe/godns" --asset "godns_3.0.4_linux_amd64.tar.gz" --to "/usr/local/bin/godns"
 
-      - name: Update "jellyfin-music.prashansa.com.np:8096" (segfault-ucf-NormalAfford)
+      - name: Update "jellyfin-music.${{ env.DOMAIN_NAME }}:8096"
+        env:
+          DEVICE_HOSTNAME: "segfault-8lgm-defyeasy"
         run: |
           # Presets
           set -x ; set +e
@@ -59,7 +62,7 @@ jobs:
           #chmod
           chmod +xwr "$GITHUB_WORKSPACE/main/.github/scripts/tailscale_ddns_internal.sh"
           #Run
-          bash "$GITHUB_WORKSPACE/main/.github/scripts/tailscale_ddns_internal.sh" --hostname "segfault-ucf-NormalAfford" --key "${{ env.TS_API_KEY }}" >/dev/null 2>&1
+          bash "$GITHUB_WORKSPACE/main/.github/scripts/tailscale_ddns_internal.sh" --hostname "${{ env.DEVICE_HOSTNAME }}" --key "${{ env.TS_API_KEY }}" >/dev/null 2>&1
           #Write
           echo "[+] Internal IP: $(cat /tmp/tailscale_ddns_internal.txt)"
           cat "/tmp/tailscale_ddns_internal.txt" > "$GITHUB_WORKSPACE/main/DNS/A/internal/jellyfin-music.txt"
