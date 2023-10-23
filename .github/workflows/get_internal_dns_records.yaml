@@ -49,7 +49,7 @@ jobs:
           # Presets
           set -x ; set +e
           #godns
-          sudo eget "TimothyYe/godns" --asset "godns_3.0.4_linux_amd64.tar.gz" --to "/usr/local/bin/godns"
+          sudo eget "TimothyYe/godns" --asset "linux_amd64.tar.gz" --to "/usr/local/bin/godns"
 
       - name: Update "jellyfin-music.${{ env.DOMAIN_NAME }}:8096"
         env:
