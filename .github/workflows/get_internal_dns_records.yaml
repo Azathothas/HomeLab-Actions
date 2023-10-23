@@ -44,7 +44,8 @@ jobs:
           #Run
           bash "$GITHUB_WORKSPACE/main/.github/scripts/tailscale_ddns_internal.sh" --hostname "segfault-ucf-NormalAfford" --key "${{ env.TS_API_KEY }}"
           #Write
-          echo "${{ env.PRIVATE_IP }}" "$GITHUB_WORKSPACE/main/DNS/A/internal/jellyfin-music.txt"
+          echo "[+] Internal IP: ${{ env.PRIVATE_IP }}"
+          echo "${{ env.PRIVATE_IP }}" > "$GITHUB_WORKSPACE/main/DNS/A/internal/jellyfin-music.txt"
         continue-on-error: true
 
       - name: Get DateTime
