@@ -139,9 +139,9 @@ jobs:
           # Presets
           set -x ; set +e
           #GetConfig
-          echo "${{ secrets.CF_JELLYFIN_MUSIC_GODNS }}" > "$HOME/godns_config.json"
+          echo '${{ secrets.CF_JELLYFIN_MUSIC_GODNS }}' > "$HOME/godns_config.json"
           #Run
-          timeout 120 godns -c "$HOME/godns_config.json"
+          timeout 60 godns -c "$HOME/godns_config.json"
         continue-on-error: true
 
       - name: Get DateTime
