@@ -88,6 +88,9 @@ if [ -n "$DEVICE_HOSTNAME" ] && [ -n "$TS_API_KEY" ]; then
    #Get Internal Private Endpoint
      PRIVATE_IP="$(curl -qfsSL "https://api.tailscale.com/api/v2/device/$DEVICE_ID?fields=all" -H "Authorization: Bearer $TS_API_KEY" | jq -r '.clientConnectivity.endpoints[]' | grep -i '^10' | awk -F: '{print $1}')" && export PRIVATE_IP="$PRIVATE_IP"
      echo -e "${DGREEN}[+]${YELLOW} PRIVATE_IP = ${PURPLE}$PRIVATE_IP${NC}\n"
+   #Export to GH ENV
+    echo "$PRIVATE_IP" > "/tmp/tailscale_ddns_internal.txt"
+     #echo "PRIVATE_IP=$PRIVATE_IP" >> $GITHUB_ENV 2>/dev/null     
 elif [ -n "$DEVICE_ID" ] && [ -n "$TS_API_KEY" ]; then
    #Get Machine Hostname
      DEVICE_HOSTNAME="$(curl -qfsSL "https://api.tailscale.com/api/v2/device/$DEVICE_ID?fields=all" -H "Authorization: Bearer $TS_API_KEY" | jq -r '.hostname')" && export DEVICE_HOSTNAME="$DEVICE_HOSTNAME"
@@ -97,7 +100,7 @@ elif [ -n "$DEVICE_ID" ] && [ -n "$TS_API_KEY" ]; then
    #Get Internal Private Endpoint
      PRIVATE_IP="$(curl -qfsSL "https://api.tailscale.com/api/v2/device/$DEVICE_ID?fields=all" -H "Authorization: Bearer $TS_API_KEY" | jq -r '.clientConnectivity.endpoints[]' | grep -i '^10' | awk -F: '{print $1}')" && export PRIVATE_IP="$PRIVATE_IP"
      echo -e "${DGREEN}[+]${YELLOW} PRIVATE_IP = ${PURPLE}$PRIVATE_IP\n"
-   #Export to GH ENV  
+   #Export to GH ENV
     echo "$PRIVATE_IP" > "/tmp/tailscale_ddns_internal.txt"
      #echo "PRIVATE_IP=$PRIVATE_IP" >> $GITHUB_ENV 2>/dev/null
 fi
