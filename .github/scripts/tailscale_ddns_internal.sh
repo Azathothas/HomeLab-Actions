@@ -83,7 +83,7 @@ fi
 if [ -n "$DEVICE_HOSTNAME" ] && [ -n "$TS_API_KEY" ]; then
      echo -e "\n${DGREEN}[+]${YELLOW} Machine (Device) Hostname = ${PURPLE}$DEVICE_HOSTNAME${NC}"
    #Get Device ID
-     DEVICE_ID="$(curl -qfsSL "https://api.tailscale.com/api/v2/tailnet/-/devices" -H "Authorization: Bearer $TS_API_KEY" | jq --arg DEVICE_HOSTNAME "$DEVICE_HOSTNAME" '.devices | map(select(.hostname | contains($DEVICE_HOSTNAME)))' | jq -r '.[].id')" && export DEVICE_ID="$DEVICE_ID"
+     DEVICE_ID="$(curl -qfsSL "https://api.tailscale.com/api/v2/tailnet/-/devices" -H "Authorization: Bearer $TS_API_KEY" | jq --arg DEVICE_HOSTNAME "$DEVICE_HOSTNAME" '.devices | map(select(.hostname | test($DEVICE_HOSTNAME; "i")))' | jq -r '.[].id')" && export DEVICE_ID="$DEVICE_ID"
      echo -e "${DGREEN}[+]${YELLOW} Machine (Device) ID = ${PURPLE}$DEVICE_ID${NC}"
    #Get Internal Private Endpoint
      PRIVATE_IP="$(curl -qfsSL "https://api.tailscale.com/api/v2/device/$DEVICE_ID?fields=all" -H "Authorization: Bearer $TS_API_KEY" | jq -r '.clientConnectivity.endpoints[]' | grep -i '^10' | awk -F: '{print $1}')" && export PRIVATE_IP="$PRIVATE_IP"
