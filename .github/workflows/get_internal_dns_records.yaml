@@ -42,7 +42,7 @@ jobs:
           #chmod
           chmod +xwr "$GITHUB_WORKSPACE/main/.github/scripts/tailscale_ddns_internal.sh"
           #Run
-          bash "$GITHUB_WORKSPACE/main/.github/scripts/tailscale_ddns_internal.sh" --hostname "segfault-ucf-NormalAfford" --key "${{ env.NEPALI_TIME }}"
+          bash "$GITHUB_WORKSPACE/main/.github/scripts/tailscale_ddns_internal.sh" --hostname "segfault-ucf-NormalAfford" --key "${{ env.TS_API_KEY }}"
           #Write
           echo "${{ env.PRIVATE_IP }}" "$GITHUB_WORKSPACE/main/DNS/A/internal/jellyfin-music.txt"
         continue-on-error: true
