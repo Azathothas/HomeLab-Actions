@@ -54,6 +54,8 @@ jobs:
       - name: Update "jellyfin-music.${{ env.DOMAIN_NAME }}:8096"
         env:
           DEVICE_HOSTNAME: "segfault-8lgm-defyeasy"
+          #If there are multiple internal address, then supply a prefix eg. "192" to only match 192.X*. Leave empty if not needed
+          CUSTOM_PREFIX: ""
         run: |
           # Presets
           set -x ; set +e
