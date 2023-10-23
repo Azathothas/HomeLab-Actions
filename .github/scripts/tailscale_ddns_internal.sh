@@ -86,7 +86,7 @@ if [ -n "$DEVICE_HOSTNAME" ] && [ -n "$TS_API_KEY" ]; then
      DEVICE_ID="$(curl -qfsSL "https://api.tailscale.com/api/v2/tailnet/-/devices" -H "Authorization: Bearer $TS_API_KEY" | jq --arg DEVICE_HOSTNAME "$DEVICE_HOSTNAME" '.devices | map(select(.hostname | test($DEVICE_HOSTNAME; "i")))' | jq -r '.[].id')" && export DEVICE_ID="$DEVICE_ID"
      echo -e "${DGREEN}[+]${YELLOW} Machine (Device) ID = ${PURPLE}$DEVICE_ID${NC}"
    #Get Internal Private Endpoint
-     PRIVATE_IP="$(curl -qfsSL "https://api.tailscale.com/api/v2/device/$DEVICE_ID?fields=all" -H "Authorization: Bearer $TS_API_KEY" | jq -r '.clientConnectivity.endpoints[]' | awk -F: '{print $1}' | grep -Eo '^(10\.|172\.|192\.)[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}')" && export PRIVATE_IP="$PRIVATE_IP"
+     PRIVATE_IP="$(curl -qfsSL "https://api.tailscale.com/api/v2/device/$DEVICE_ID?fields=all" -H "Authorization: Bearer $TS_API_KEY" | jq -r '.clientConnectivity.endpoints[]' | awk -F: '{print $1}' | grep -Eo '^(10\.|172\.|192\.)[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | grep -i "$CUSTOM_PREFIX")" && export PRIVATE_IP="$PRIVATE_IP"
      echo -e "${DGREEN}[+]${YELLOW} PRIVATE_IP = ${PURPLE}$PRIVATE_IP${NC}\n"
    #Export to GH ENV
     echo "$PRIVATE_IP" > "/tmp/tailscale_ddns_internal.txt"
@@ -98,7 +98,7 @@ elif [ -n "$DEVICE_ID" ] && [ -n "$TS_API_KEY" ]; then
    #Get Device ID
      echo -e "${DGREEN}[+]${YELLOW} Machine (Device) ID = ${PURPLE}$DEVICE_ID${NC}"
    #Get Internal Private Endpoint
-     PRIVATE_IP="$(curl -qfsSL "https://api.tailscale.com/api/v2/device/$DEVICE_ID?fields=all" -H "Authorization: Bearer $TS_API_KEY" | jq -r '.clientConnectivity.endpoints[]' | awk -F: '{print $1}' | grep -Eo '^(10\.|172\.|192\.)[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}')" && export PRIVATE_IP="$PRIVATE_IP"
+     PRIVATE_IP="$(curl -qfsSL "https://api.tailscale.com/api/v2/device/$DEVICE_ID?fields=all" -H "Authorization: Bearer $TS_API_KEY" | jq -r '.clientConnectivity.endpoints[]' | awk -F: '{print $1}' | grep -Eo '^(10\.|172\.|192\.)[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | grep -i "$CUSTOM_PREFIX" )" && export PRIVATE_IP="$PRIVATE_IP"
      echo -e "${DGREEN}[+]${YELLOW} PRIVATE_IP = ${PURPLE}$PRIVATE_IP\n"
    #Export to GH ENV
     echo "$PRIVATE_IP" > "/tmp/tailscale_ddns_internal.txt"
