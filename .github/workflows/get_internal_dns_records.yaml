@@ -42,10 +42,10 @@ jobs:
           #chmod
           chmod +xwr "$GITHUB_WORKSPACE/main/.github/scripts/tailscale_ddns_internal.sh"
           #Run
-          bash "$GITHUB_WORKSPACE/main/.github/scripts/tailscale_ddns_internal.sh" --hostname "segfault-ucf-NormalAfford" --key "${{ env.TS_API_KEY }}"
+          bash "$GITHUB_WORKSPACE/main/.github/scripts/tailscale_ddns_internal.sh" --hostname "segfault-ucf-NormalAfford" --key "${{ env.TS_API_KEY }}" >/dev/null 2>&1
           #Write
-          echo "[+] Internal IP: ${{ env.PRIVATE_IP }}"
-          echo "${{ env.PRIVATE_IP }}" > "$GITHUB_WORKSPACE/main/DNS/A/internal/jellyfin-music.txt"
+          echo "[+] Internal IP: $(cat /tmp/tailscale_ddns_internal.txt)"
+          cat "/tmp/tailscale_ddns_internal.txt" > "$GITHUB_WORKSPACE/main/DNS/A/internal/jellyfin-music.txt"
         continue-on-error: true
 
       - name: Get DateTime
