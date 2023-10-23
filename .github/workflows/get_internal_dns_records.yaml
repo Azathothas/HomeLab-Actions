@@ -2,8 +2,8 @@ name: ⏫ Update 🔏 Internal DNS 🌐 Records 🔰
 #MAX_RUNTIME: 01-05 Mins
 on:
   workflow_dispatch: # Whenever manually run from actions-tab
-#  schedule:
-#    - cron: "45 23 * * *" #( 11:45 PM UTC --> 05:30 AM Morning )
+  schedule:
+    - cron: "0 */1 * * *"  # Every 1 Hr
 #------------------------------------------------------------------------------------#  
 env:
   #GITHUB_WORKSPACE: "${{ env.GITHUB_WORKSPACE }}"
@@ -131,17 +131,13 @@ jobs:
           sudo eget "TimothyYe/godns" --asset "linux_amd64.tar.gz" --to "/usr/local/bin/godns"
 
       - name: Update "jellyfin-music.${{ env.DOMAIN_NAME }}:8096"
-        env:
-          DEVICE_HOSTNAME: "segfault-8lgm-defyeasy"
-          #If there are multiple internal address, then supply a prefix eg. "192" to only match 192.X*. Leave empty if not needed
-          CUSTOM_PREFIX: ""
         run: |
           # Presets
           set -x ; set +e
           #GetConfig
           echo '${{ secrets.CF_JELLYFIN_MUSIC_GODNS }}' > "$HOME/godns_config.json"
           #Run
-          timeout 60 godns -c "$HOME/godns_config.json"
+          timeout 60 godns -c "$HOME/godns_config.json"  >/dev/null 2>&1
         continue-on-error: true
 
       - name: Get DateTime
