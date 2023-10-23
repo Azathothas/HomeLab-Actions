@@ -1,0 +1,67 @@
+name: ⏫ Update Internal DNS 🌐 Records 🔰
+#MAX_RUNTIME: 01-05 Mins
+on:
+  workflow_dispatch: # Whenever manually run from actions-tab
+#  schedule:
+#    - cron: "45 23 * * *" #( 11:45 PM UTC --> 05:30 AM Morning )
+#------------------------------------------------------------------------------------#  
+env:
+  #GITHUB_WORKSPACE: "${{ env.GITHUB_WORKSPACE }}"
+  TS_API_KEY: "${{ secrets.TS_API_KEY }}"
+#------------------------------------------------------------------------------------#
+jobs:
+  DDNS:
+    runs-on: ubuntu-latest
+    #timeout-minutes: 45 # Can't afford to finish the 2000 Minutes quotes    
+    permissions:
+      contents: write
+      
+    steps:        
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          path: main  
+
+      - name: Install Coreutils
+        run: |
+          # Presets
+          set -x ; set +e
+          #--------------#
+          sudo apt update -y
+          sudo apt install coreutils curl dos2unix jq moreutils wget -y
+          # Again just because
+          sudo apt install coreutils curl dos2unix jq moreutils wget -y
+        continue-on-error: true
+        
+      - name: Update "jellyfin-music.prashansa.com.np:8096" (segfault-ucf-NormalAfford)
+        run: |
+          # Presets
+          set -x ; set +e
+          #Dos2unix
+          dos2unix "$GITHUB_WORKSPACE/main/.github/scripts/tailscale_ddns_internal.sh"
+          #chmod
+          chmod +xwr "$GITHUB_WORKSPACE/main/.github/scripts/tailscale_ddns_internal.sh"
+          #Run
+          bash "$GITHUB_WORKSPACE/main/.github/scripts/tailscale_ddns_internal.sh" --hostname "segfault-ucf-NormalAfford" --key "${{ env.NEPALI_TIME }}"
+          #Write
+          echo "${{ env.PRIVATE_IP }}" "$GITHUB_WORKSPACE/main/DNS/A/internal/jellyfin-music.txt"
+        continue-on-error: true
+
+      - name: Get DateTime
+        run: |
+          # Date Time
+          NEPALI_TIME=$(TZ='Asia/Kathmandu' date +'%Y-%m-%d (%I:%M:%S %p)')
+          echo "NEPALI_TIME=$NEPALI_TIME" >> $GITHUB_ENV
+          
+      - name: Git Pull
+        run: |
+           cd "$GITHUB_WORKSPACE/main" && git pull origin main
+        continue-on-error: true
+        
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          repository: ./main        
+          commit_user_name: Azathothas # defaults to "github-actions[bot]"
+          commit_user_email: AjamX101@gmail.com # defaults to "41898282+github-actions[bot]@users.noreply.github.com"
+          commit_message: "✅ ⏫ Updated Internal DNS 🌐 Records 🔰 <-- ${{ env.NEPALI_TIME }} ⌚"
+          push_options: '--force'
