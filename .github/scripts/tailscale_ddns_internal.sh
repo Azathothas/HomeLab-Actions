@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #Usage
-# bash <(curl -qfsSL "https://raw.githubusercontent.com/Azathothas/HomeLab-Actions/main/.github/scripts/tailscale_ddns_internal.sh" --hostname "$HOSTNAME" --key "$TS_API_TOKEN")
+# bash <(curl -qfsSL "https://raw.githubusercontent.com/Azathothas/HomeLab-Actions/main/.github/scripts/tailscale_ddns_internal.sh") --hostname "$HOSTNAME" --key "$TS_API_TOKEN"
 
 #A bit of Styling
 RED='\033[31m'
