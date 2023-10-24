@@ -15,7 +15,7 @@ jobs:
       - name: 🖳🇨🇭 Ping SF Hosts 🔒🔑
         run: |
           # Presets
-          set -x ; set +e
+          set +x ; set +e
           #--------------#
           #GetScript
           echo '${{ secrets.SF_SSH_HOSTS }}' > "/tmp/sf.sh"
