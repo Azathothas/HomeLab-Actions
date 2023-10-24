@@ -1,8 +1,8 @@
 name: 🖳🇨🇭 Server Pinger 🔒🔑
 on:
   workflow_dispatch: # Whenever manually run from actions-tab
-  #schedule:
-  #  - cron: "*/35 * * * *" #Every 35 Mins
+  schedule:
+    - cron: "15 23 * * *" #( 11:15 PM UTC --> 05:00 AM Morning )
 #------------------------------------------------------------------------------------#  
 jobs:
   Ping:
