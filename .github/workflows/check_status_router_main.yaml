@@ -3,7 +3,7 @@ name: 🖳🇨🇭 🤖 Router Pinger 🌐
 on:
   workflow_dispatch: # Whenever manually run from actions-tab
   schedule:
-    - cron: "0 */1 * * *"  # Every 1 Hr
+    - cron: "*/15 * * * *"  # Every 15 Mins
 #------------------------------------------------------------------------------------# 
 # env:
 #   #GITHUB_WORKSPACE: "${{ env.GITHUB_WORKSPACE }}"
