@@ -1,0 +1,85 @@
+name: 🖳🇨🇭 Router Pinger 🌐
+on:
+  workflow_dispatch: # Whenever manually run from actions-tab
+  schedule:
+    - cron: "0 */1 * * *"  # Every 1 Hr
+#------------------------------------------------------------------------------------# 
+# env:
+#   #GITHUB_WORKSPACE: "${{ env.GITHUB_WORKSPACE }}"
+#------------------------------------------------------------------------------------# 
+jobs:
+  Ping:
+    runs-on: ubuntu-latest
+    #timeout-minutes: 05
+    permissions:
+      contents: write
+    steps:        
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          path: main
+
+      - name: Install Coreutils
+        run: |
+          # Presets
+          set -x ; set +e
+          #--------------#
+          sudo apt update -y
+          sudo apt install coreutils curl dos2unix jq moreutils wget -y
+          # Again just because
+          sudo apt install coreutils curl dos2unix jq moreutils wget -y
+          #Deps
+          pip install ansi2txt
+          # For TG BOT Notifs
+          pip install apprise 
+          pip install apprise 2>/dev/null
+          # For neofetch
+          pip install archey4
+          pip install archey4 2>/dev/null          
+        continue-on-error: true
+
+      - name: Install eget
+        run: |
+          # Presets
+          set -x ; set +e
+          #--------------#
+          # eget for bins
+          sudo wget "https://raw.githubusercontent.com/Azathothas/Toolpacks/main/x86_64/eget" -O "/usr/local/bin/eget"
+          sudo chmod +xwr "/usr/local/bin/eget"
+        continue-on-error: false
+
+      - name: 🖳🇨🇭 Ping Main Router 🌐
+        run: |
+          # Presets
+          set +x ; set +e
+          #--------------#
+          #GetScript
+          echo '${{ secrets.WL_RCHECK }}' > "/tmp/wl.sh"
+          #dos2unix && chmod
+          dos2unix "/tmp/wl.sh" ; chmod +xwr "/tmp/wl.sh"
+          #Run
+          bash "/tmp/wl.sh" 2>/dev/null
+          #bash "/tmp/wl.sh" >/dev/null 2>&1
+          #Update
+          mkdir -p "$GITHUB_WORKSPACE/main/Status"
+          cat "/tmp/router_status.txt" > "$GITHUB_WORKSPACE/main/Status/router_main_status.txt"
+        continue-on-error: true
+
+      - name: Get DateTime
+        run: |
+          # Date Time
+          NEPALI_TIME=$(TZ='Asia/Kathmandu' date +'%Y-%m-%d (%I:%M:%S %p)')
+          echo "NEPALI_TIME=$NEPALI_TIME" >> $GITHUB_ENV
+          
+      - name: Git Pull
+        run: |
+           cd "$GITHUB_WORKSPACE/main" && git pull origin main
+        continue-on-error: true
+        
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          repository: ./main
+          commit_user_name: Azathothas # defaults to "github-actions[bot]"
+          commit_user_email: AjamX101@gmail.com # defaults to "41898282+github-actions[bot]@users.noreply.github.com"
+          commit_message: "✅ 🤖 Checked 🌐 Router Status 🔰 <-- ${{ env.NEPALI_TIME }} ⌚"
+          #push_options: '--force'
