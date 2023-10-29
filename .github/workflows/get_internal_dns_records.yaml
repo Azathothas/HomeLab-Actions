@@ -1,4 +1,5 @@
 name: ⏫ Update 🔏 Internal DNS 🌐 Records 🔰
+#DEPENDS ON: CF_JELLYFIN_MUSIC_GODNS (godns json config) || TS_API_KEY (TailScale API Auth Token) || 
 #MAX_RUNTIME: 01-05 Mins
 on:
   workflow_dispatch: # Whenever manually run from actions-tab
