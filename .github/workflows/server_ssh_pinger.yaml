@@ -1,4 +1,5 @@
 name: 🖳🇨🇭 Server Pinger 🔒🔑
+#DEPENDS: SF_SSH_HOSTS (main script) as Repo Secret
 on:
   workflow_dispatch: # Whenever manually run from actions-tab
   schedule:
