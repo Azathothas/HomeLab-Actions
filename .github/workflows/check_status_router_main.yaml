@@ -1,4 +1,5 @@
 name: 🖳🇨🇭 🤖 Router Pinger 🌐
+#DEPENDS ON: WL_RCHECK as Repo Secret
 on:
   workflow_dispatch: # Whenever manually run from actions-tab
   schedule:
