@@ -1,4 +1,4 @@
-name: 🖳🇨🇭 Router Pinger 🌐
+name: 🖳🇨🇭 🤖 Router Pinger 🌐
 on:
   workflow_dispatch: # Whenever manually run from actions-tab
   schedule:
